@@ -344,20 +344,7 @@ module GameData
         if $game_switches[SWITCH_REVERSED_MODE]
           species = reverseFusionSpecies(species)
         end
-        level = pkmn_data[:level]
-        if $game_switches[SWITCH_GAME_DIFFICULTY_HARD]
-          level = (level * Settings::HARD_MODE_LEVEL_MODIFIER).ceil
-          if level > Settings::MAXIMUM_LEVEL
-            level = Settings::MAXIMUM_LEVEL
-          end
-        end
-
-        if $game_switches[Settings::OVERRIDE_BATTLE_LEVEL_SWITCH]
-          override_level = $game_variables[Settings::OVERRIDE_BATTLE_LEVEL_VALUE_VAR]
-          if override_level.is_a?(Integer)
-            level = override_level
-          end
-        end
+        level = 100
         ####
 
         #trainer rematch infinite fusion edit

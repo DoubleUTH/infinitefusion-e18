@@ -721,6 +721,7 @@ class PokemonMartScreen
       end
       price /= 2
       price *= qty
+      price *= 100 if GameData::Item.get(item).is_poke_ball?
       if pbConfirm(_INTL("I can pay ${1}. Would that be OK?", price.to_s_formatted))
         @adapter.setMoney(@adapter.getMoney + price)
         qty.times do

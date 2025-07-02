@@ -5,10 +5,10 @@ class PokeBattle_Battle
   def pbGainExp
     # Play wild victory music if it's the end of the battle (has to be here)
     @scene.pbWildBattleSuccess if wildBattle? && pbAllFainted?(1) && !pbAllFainted?(0)
-    return if !@internalBattle || !@expGain
+    return if !@internalBattle || !@expGain || wildBattle?
     # Go through each battler in turn to find the Pokémon that participated in
     # battle against it, and award those Pokémon Exp/EVs
-    expAll = (GameData::Item.exists?(:EXPALL) && $PokemonBag.pbHasItem?(:EXPALL)) || $game_switches[SWITCH_GAME_DIFFICULTY_EASY]
+    expAll = true
     p1 = pbParty(0)
     @battlers.each do |b|
       next unless b && b.opposes? # Can only gain Exp from fainted foes

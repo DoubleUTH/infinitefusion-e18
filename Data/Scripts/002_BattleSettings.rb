@@ -54,19 +54,19 @@ module Settings
 
   # Whether the Exp gained from beating a Pokémon should be scaled depending on
   # the gainer's level.
-  SCALED_EXP_FORMULA        = (MECHANICS_GENERATION == 5 || MECHANICS_GENERATION >= 7)
+  SCALED_EXP_FORMULA        = false
   # Whether the Exp gained from beating a Pokémon should be divided equally
   # between each participant (true), or whether each participant should gain
   # that much Exp (false). This also applies to Exp gained via the Exp Share
   # (held item version) being distributed to all Exp Share holders.
-  SPLIT_EXP_BETWEEN_GAINERS = (MECHANICS_GENERATION <= 5)
+  SPLIT_EXP_BETWEEN_GAINERS = false
   # Whether the critical capture mechanic applies. Note that its calculation is
   # based on a total of 600+ species (i.e. that many species need to be caught
   # to provide the greatest critical capture chance of 2.5x), and there may be
   # fewer species in your game.
   ENABLE_CRITICAL_CAPTURES  = false#(MECHANICS_GENERATION >= 5)
   # Whether Pokémon gain Exp for capturing a Pokémon.
-  GAIN_EXP_FOR_CAPTURE      = (MECHANICS_GENERATION >= 5)
+  GAIN_EXP_FOR_CAPTURE      = false
   # The Game Switch which, whie ON, prevents the player from losing money if
   # they lose a battle (they can still gain money from trainers for winning).
   NO_MONEY_LOSS             = 33
