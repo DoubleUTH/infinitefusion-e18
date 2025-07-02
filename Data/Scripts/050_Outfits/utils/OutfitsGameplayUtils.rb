@@ -23,6 +23,18 @@ def obtainHat(outfit_id,secondary=false)
   return false
 end
 
+#Like obtainHat, but silent
+def unlockHat(outfit_id)
+  echoln "obtained new hat: " + outfit_id
+  outfit = get_hat_by_id(outfit_id)
+  if !outfit
+    pbMessage(_INTL("The hat #{outfit_id} is invalid."))
+    return
+  end
+  $Trainer.unlocked_hats << outfit_id if !$Trainer.unlocked_hats.include?(outfit_id)
+  return false
+end
+
 def obtainClothes(outfit_id)
   echoln "obtained new clothes: " + outfit_id
   outfit = get_clothes_by_id(outfit_id)
@@ -405,6 +417,18 @@ def randomizePlayerOutfit()
   $Trainer.skin_tone = [1,2,3,4,5,6].sample
   $Trainer.hair = getFullHairId(hair_id,hair_color)
 
+end
+
+def select_hat()
+  hats_list = $Trainer.unlocked_hats
+  options = []
+  hats_list.each do |hat_id|
+    hat_name = get_hat_by_id(hat_id)
+    options << hat_name.name
+  end
+  chosen_index= optionsMenu(options)
+  selected_hat_id = hats_list[chosen_index]
+  return selected_hat_id
 end
 
 def canPutHatOnPokemon(pokemon)

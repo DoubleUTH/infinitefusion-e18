@@ -1,13 +1,13 @@
 
 module Settings
-  LATEST_GAME_RELEASE = "6.4.0"
+  LATEST_GAME_RELEASE = "6.6.1"
 
   SHINY_POKEMON_CHANCE = 16
   DISCORD_URL = "https://discord.com/invite/infinitefusion"
   WIKI_URL = "https://infinitefusion.fandom.com/"
   STARTUP_MESSAGES = ""
   
-  CREDITS_FILE_URL = "https://infinitefusion.net/Sprite Credits.csv"
+  CREDITS_FILE_URL = "https://infinitefusion.net/customsprites/Sprite_Credits.csv"
 
   SPRITES_FILE_URL = "https://raw.githubusercontent.com/infinitefusion/pif-downloadables/refs/heads/master/CUSTOM_SPRITES"
   BASE_SPRITES_FILE_URL = "https://raw.githubusercontent.com/infinitefusion/pif-downloadables/refs/heads/master/BASE_SPRITES"
@@ -44,7 +44,7 @@ module Settings
   AI_ENTRIES_RATE_LOG_FILE = 'Data/pokedex/rate_limit.log'  # Path to the log file
 
   #Spritepack
-  NEWEST_SPRITEPACK_MONTH = 2
+  NEWEST_SPRITEPACK_MONTH = 5
   NEWEST_SPRITEPACK_YEAR = 2025
 
 

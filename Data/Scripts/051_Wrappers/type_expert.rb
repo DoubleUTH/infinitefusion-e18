@@ -31,7 +31,7 @@ end
 TYPE_EXPERTS_APPEARANCES = {
   :TYPE_EXPERT_NORMAL => TrainerAppearance.new(5, "snorlaxhat", "normal", "1_painter", 0, 0, 0), #todo TEAM
   :TYPE_EXPERT_FIGHTING => TrainerAppearance.new(1, "karateHeadband", "fighting", "4_samurai", 0, 0, 0), #OK
-  # TYPE_EXPERT_FLYING	=>#TODO NEEDS OUTFIT, LOCATION, TEAM
+  :TYPE_EXPERT_FLYING	=>TrainerAppearance.new(6,"swablu","flying","1_lass",1260,0,0),
   :TYPE_EXPERT_POISON => TrainerAppearance.new(5, "parashroom", "deadlypoisondanger", "3_lowbraids", 270, 0, 0), #todo TEAM
   :TYPE_EXPERT_GROUND => TrainerAppearance.new(5, "sandshrewbeanie", "groundcowboy", "3_shortspike", 0, 0, 0), #todo TEAM
   # TYPE_EXPERT_ROCK	=>#TODO NEEDS OUTFIT, LOCATION, TEAM
@@ -45,7 +45,7 @@ TYPE_EXPERTS_APPEARANCES = {
   # TYPE_EXPERT_PSYCHIC	=># TODO NEEDS OUTFIT, LOCATION, TEAM
   :TYPE_EXPERT_ICE	=>	TrainerAppearance.new(6,"skierF","iceoutfit","1_wavy",0,0,210),
   :TYPE_EXPERT_DRAGON => TrainerAppearance.new(5, "aerodactylSkull", "dragonconqueror", "2_SpecialLatias", 670, 0, 510), #todo NEEDS LOCATION, TEAM
-  # TYPE_EXPERT_DARK	=>  #TODO NEEDS OUTFIT, LOCATION, TEAM
+  :TYPE_EXPERT_DARK	=>  TrainerAppearance.new(4,"cynthiaaccessory","darkoutfit","3_emo",330,0,0),
   :TYPE_EXPERT_FAIRY => TrainerAppearance.new(6, "mikufairy", "mikufairyf", "5_mikufairy", 0, 0, 0) #OK
 }
 
@@ -63,7 +63,7 @@ TYPE_EXPERT_TRAINERS = {
   :ROCK => ["Slate", "Looks like I’ve hit rock bottom..."],
   :WATER => ["Marina", "You really made a splash!"],
   :FLYING => ["Gale", "I guess I’m grounded for now."],
-  :DARK => ["Raven", "I’ll slip back into the shadows"],
+  :DARK => ["Gerard", "I’ll slip back into the shadows"],
   :STEEL => ["Silvia", "I guess I was a bit rusty..."],
   :PSYCHIC => ["Carl", "I could not foresee this defeat."],
   :GHOST => ["Evangeline", "I can feel myself disappearing into thin air!"],
@@ -93,7 +93,7 @@ TYPE_EXPERT_REWARDS = {
   :NORMAL => [CLOTHES_NORMAL],
 }
 
-TOTAL_NB_TYPE_EXPERTS = 12
+TOTAL_NB_TYPE_EXPERTS = 14
 def type_expert_battle(type_id)
   type = GameData::Type.get(type_id)
   pbCallBub(2, @event_id)

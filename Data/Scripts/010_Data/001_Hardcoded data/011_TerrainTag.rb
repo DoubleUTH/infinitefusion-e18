@@ -29,6 +29,7 @@ module GameData
     attr_reader :flower
     attr_reader :trashcan
     attr_reader :sharpedoObstacle
+    attr_reader :underwater #only visible when diving
 
     DATA = {}
 
@@ -67,8 +68,9 @@ module GameData
       @ice = hash[:ice] || false
       @waterCurrent = hash[:waterCurrent] || false
       @bridge = hash[:bridge] || false
-      @shows_reflections = false #= hash[:shows_reflections]      || false
+      @shows_reflections =   hash[:shows_reflections]      || false
       @must_walk = hash[:must_walk] || false
+      @ignore_passability = hash[:ignore_passability] || false
       @ignore_passability = hash[:ignore_passability] || false
 
       @flowerRed = hash[:flowerRed] || false
@@ -78,6 +80,7 @@ module GameData
       @flower = hash[:flower] || false
       @trashcan = hash[:trashcan] || false
       @sharpedoObstacle = hash[:sharpedoObstacle] || false
+      @underwater = hash[:underwater] || false
 
     end
 
@@ -138,14 +141,7 @@ GameData::TerrainTag.register({
                                 :battle_environment => :MovingWater
                               })
 
-GameData::TerrainTag.register({
-                                :id => :StillWater,
-                                :id_number => 17,
-                                :can_surf => true,
-                                :can_fish => true,
-                                :battle_environment => :StillWater
-                                #:shows_reflections      => true
-                              })
+
 
 GameData::TerrainTag.register({
                                 :id => :Water,
@@ -183,6 +179,7 @@ GameData::TerrainTag.register({
 GameData::TerrainTag.register({
                                 :id => :UnderwaterGrass,
                                 :id_number => 11,
+                                :underwater => true,
                                 :land_wild_encounters => true
                               })
 
@@ -220,7 +217,7 @@ GameData::TerrainTag.register({
                                 :id => :Puddle,
                                 :id_number => 16,
                                 :battle_environment => :Puddle,
-                                :shows_reflections => true
+                                :shows_reflections => false
                               })
 
 GameData::TerrainTag.register({
@@ -286,4 +283,20 @@ GameData::TerrainTag.register({
                                 :shows_grass_rustle => true,
                                 :land_wild_encounters => true,
                                 :battle_environment => :Grass
+                              })
+
+GameData::TerrainTag.register({
+                                :id => :StillWater,
+                                :id_number => 27,
+                                :can_surf => true,
+                                :can_fish => true,
+                                :battle_environment => :StillWater,
+                                :shows_reflections      => true
+                              })
+
+GameData::TerrainTag.register({
+                                :id => :Underwater,
+                                :id_number => 28,
+                                :battle_environment => :underwater,
+                                :underwater => true,
                               })

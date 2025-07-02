@@ -55,7 +55,7 @@ class Pokemon
   # @return [Array<Pokemon::Move>] the moves known by this Pokémon
   attr_accessor :moves
 
-  # @return [Array<Pokemon::Move>] All the moves ever learned by this Pokémon
+  # @return [Array<Symbol>] All the move (ids) ever learned by this Pokémon
   attr_accessor :learned_moves
 
   # @return [Array<Integer>] the IDs of moves known by this Pokémon when it was obtained
@@ -606,12 +606,12 @@ class Pokemon
 
   # Makes this Pokémon male.
   def makeMale
-    self.gender = 0;
+    @gender = 0
   end
 
   # Makes this Pokémon female.
   def makeFemale
-    self.gender = 1;
+    @gender = 1
   end
 
   # @return [Boolean] whether this Pokémon is male
@@ -874,14 +874,20 @@ class Pokemon
     for i in first_move_index...knowable_moves.length
       move = Pokemon::Move.new(knowable_moves[i])
       @moves.push(move)
-      @learned_moves = [] if !@learned_moves
-      @learned_moves << move if !@learned_moves.include?(move)
+      add_learned_move(move)
     end
   end
 
   def add_learned_move(move)
     @learned_moves = [] if !@learned_moves
-    @learned_moves << move unless @learned_moves.include?(move)
+    if move.is_a?(Symbol)
+      @learned_moves << move unless @learned_moves.include?(move)
+    else
+      move_id = move.id
+      if move_id
+        @learned_moves << move_id unless @learned_moves.include?(move_id)
+      end
+    end
   end
 
 
@@ -902,9 +908,7 @@ class Pokemon
     @moves.push(move)
     # Delete the first known move if self now knows more moves than it should
     @moves.shift if numMoves > MAX_MOVES
-    @learned_moves = [] if !@learned_moves
-    @learned_moves << move if !@learned_moves.include?(move)
-    echoln @learned_moves
+    add_learned_move(move)
   end
 
   # Deletes the given move from the Pokémon.
@@ -912,17 +916,23 @@ class Pokemon
   def forget_move(move_id)
     move_data = GameData::Move.try_get(move_id)
     return if !move_data
+    add_learned_move(move_id)
     @moves.delete_if { |m| m.id == move_data.id }
   end
 
   # Deletes the move at the given index from the Pokémon.
   # @param index [Integer] index of the move to be deleted
   def forget_move_at_index(index)
+    move_id = @moves[index].id
+    add_learned_move(move_id)
     @moves.delete_at(index)
   end
 
   # Deletes all moves from the Pokémon.
   def forget_all_moves
+    for move in @moves
+      add_learned_move(move)
+    end
     @moves.clear
   end
 
@@ -967,6 +977,7 @@ class Pokemon
   end
 
   def pokemon_can_learn_move(species_data, move_data)
+    moveset = species_data.moves.map { |pair| pair[1] }
     return species_data.tutor_moves.include?(move_data.id) ||
       species_data.moves.any? { |move| move[1] == move_data.id } ||
       species_data.egg_moves.include?(move_data.id) ||
@@ -1251,8 +1262,7 @@ class Pokemon
     return newspecies
   end
 
-  def check_evolution_on_level_up
-
+  def check_evolution_on_level_up(prompt_choice=true)
     if @species_data.is_a?(GameData::FusedSpecies)
       body = self.species_data.body_pokemon
       head = self.species_data.head_pokemon
@@ -1266,7 +1276,8 @@ class Pokemon
         next (success) ? new_species : nil
       }
       if body_evolution && head_evolution
-        return prompt_evolution_choice(body_evolution, head_evolution)
+        return prompt_evolution_choice(body_evolution, head_evolution) if prompt_choice
+        return [body_evolution,head_evolution].sample
       end
     end
 
@@ -1590,7 +1601,6 @@ class Pokemon
     @hat_y = 0
     @size_category = determine_size_category()
     @sprite_scale=determine_scale()
-    echoln @sprite_scale
     calc_stats
     if @form == 0 && recheck_form
       f = MultipleForms.call("getFormOnCreation", self)

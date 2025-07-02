@@ -149,6 +149,13 @@
         "tags": "pokemon-cresselia"
     },
     {
+        "id": "darkoutfit",
+        "name": "Dark Outfit",
+        "description": "A sinister outfit for those who thrive in the darkness. It captures the essence of Dark-type Pokémon.",
+        "price": 10000,
+        "tags": "type-dark,special"
+    },
+    {
         "id": "deadlypoisondanger",
         "name": "Poison Outfit",
         "description": "A noxious-looking outfit for those who handle deadly poisons. It captures the essence of Poison-type Pokémon.",
@@ -339,6 +346,13 @@
         "price": 4500,
         "tags": "mahogany",
         "howToGet": "city-exclusive outfit"
+    },
+    {
+        "id": "klara",
+        "name": "Toxic Idol Coat",
+        "description": "A stylish puffy coat that was popularized by a poison-type Gym leader from Galar.",
+        "price": 8000,
+        "tags": "galar"
     },
     {
         "id": "kris",

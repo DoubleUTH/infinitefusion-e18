@@ -103,4 +103,6 @@ class ClothesMartAdapter < OutfitsMartAdapter
   def isWornItem?(item)
     super
   end
+
+
 end

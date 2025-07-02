@@ -28,6 +28,8 @@ DEFAULT_OUTFIT_MALE = "red"
 DEFAULT_OUTFIT_FEMALE = "leaf"
 STARTING_OUTFIT = "pikajamas"
 
+CLOTHES_BRENDAN = "red" #todo
+CLOTHES_MAY = "leaf"    #todo
 
 #Hats
 HAT_TEAM_ROCKET = "rocketcap"
@@ -38,6 +40,11 @@ HAT_PIKACHUM_NEST = "pikhatchum"
 HAT_PIKACHUF_NEST = "pikhatchuf"
 HAT_PARAS_NEST = "headparas"
 HAT_EEVEE_NEST = "eevee"
+HAT_SILPHSCOPE = "silphscope"
+HAT_BRENDAN = "brendanRSE"
+HAT_MAY = "mayRSE"
+HAT_ORAN = "orange"
+
 
 HAT_PARASHROOM = "parashroom"
 HAT_AERODACTYL = "aerodactylSkull"
@@ -54,6 +61,8 @@ HAT_FEZ = "fez"
 HAT_HALO = "halo"
 HAT_MAGIKARP = "magicap"
 HAT_SLOWKING_SHELL = "slowking"
+HAT_TENTACRUEL = "tentacruel"
+
 HAT_ZOROARK = "banefulfoxmask"
 HAT_FROG = "froghat"
 HAT_SANTA = "santa"
@@ -85,6 +94,10 @@ HAT_FLOWER = "mikufairy"
 HAT_SKITTY_TV = "skittyTV"
 HAT_TVHEAD = "tvhead"
 
+HAT_SCRIBBLES1 = "scribbles1"
+HAT_SCRIBBLES2 = "scribbles2"
+HAT_SCRIBBLES3 = "scribbles3"
+HAT_SCRIBBLES4 = "scribbles4"
 
 HAT_CARDBOARD_BOX = "box"
 HAT_CAPTAIN = "seacaptain"
@@ -141,3 +154,8 @@ HAIR_LYCANROC="lycanrocshorthair"
 HAIR_HAPPINY="happinysuit"
 HAIR_LATIAS="SpecialLatias"
 HAIR_GARDEVOIR="gardevoir"
+HAIR_EEVEE="eeveetail"
+HAIR_LEAFEON="leafeonbob"
+
+HAIR_BRENDAN = "buzzcut"
+HAIR_MAY = "may"

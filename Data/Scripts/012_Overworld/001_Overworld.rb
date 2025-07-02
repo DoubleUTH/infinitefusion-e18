@@ -155,7 +155,7 @@ Events.onStepTakenFieldMovement += proc { |_sender, e|
     end
     if event == $game_player
       currentTag = $game_player.pbTerrainTag
-      if currentTag.waterfall_crest || currentTag.waterfall
+      if isTerrainWaterfall(currentTag)
         pbDescendWaterfall
       elsif currentTag.ice && !$PokemonGlobal.sliding
         pbSlideOnIce
@@ -165,6 +165,10 @@ Events.onStepTakenFieldMovement += proc { |_sender, e|
     end
   end
 }
+
+def isTerrainWaterfall(currentTag)
+  return currentTag.waterfall_crest || currentTag.waterfall
+end
 
 def isRepelActive()
   return false if $game_switches[SWITCH_USED_AN_INCENSE]
@@ -222,6 +226,7 @@ end
 def pbBattleOnStepTaken(repel_active)
   return if $Trainer.able_pokemon_count == 0
   return if !$PokemonEncounters.encounter_possible_here?
+  return if $PokemonGlobal.surfing && Settings::GAME_ID == :IF_HOENN
   encounter_type = $PokemonEncounters.encounter_type
   return if !encounter_type
   return if !$PokemonEncounters.encounter_triggered?(encounter_type, repel_active)
@@ -283,7 +288,13 @@ Events.onMapChange += proc { |_sender, e|
   if new_map_metadata && new_map_metadata.teleport_destination
     $PokemonGlobal.healingSpot = new_map_metadata.teleport_destination
   end
-  $PokemonMap.clear if $PokemonMap
+  if $PokemonMap
+    blackFluteUsed = $PokemonMap.blackFluteUsed
+    whiteFluteUsed = $PokemonMap.whiteFluteUsed
+    $PokemonMap.clear
+    $PokemonMap.blackFluteUsed = blackFluteUsed
+    $PokemonMap.whiteFluteUsed = whiteFluteUsed
+  end
   $PokemonEncounters.setup($game_map.map_id) if $PokemonEncounters
   $PokemonGlobal.visitedMaps[$game_map.map_id] = true
   next if old_map_ID == 0 || old_map_ID == $game_map.map_id
@@ -898,7 +909,7 @@ def pbReceiveItem(item, quantity = 1, item_name = "", music = nil, canRandom = t
   move = item.move
   meName = (item.is_key_item?) ? "Key item get" : "Item get"
   text_color = item.is_key_item? ? "\\c[3]" : "\\c[1]"
-  if item == :LEFTOVERS
+  if item == :LEFTOVERS || item == :MUSHROOMSPORES
     pbMessage(_INTL("\\me[{1}]You obtained some \\c[1]{2}\\c[0]!\\wtnp[30]", meName, itemname))
   elsif item.is_machine? # TM or HM
     # if $game_switches[SWITCH_RANDOMIZE_GYMS_SEPARATELY] && $game_switches[SWITCH_RANDOMIZED_GYM_TYPES] && $game_variables[VAR_CURRENT_GYM_TYPE] > -1

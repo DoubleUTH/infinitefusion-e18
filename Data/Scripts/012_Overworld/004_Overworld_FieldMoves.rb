@@ -435,7 +435,7 @@ Events.onAction += proc { |_sender, _e|
       pbSurfacing
     end
   else
-    pbDive if $game_player.terrain_tag.can_dive
+    pbDive if $game_player.terrain_tag.can_dive || (Settings::GAME_ID == :IF_HOENN && $game_player.terrain_tag.can_surf)
   end
 }
 
@@ -867,6 +867,7 @@ def pbEndSurf(_xOffset, _yOffset)
       pbOnStepTaken(result)
     end
     $PokemonTemp.surfJump = nil
+    $game_temp.clearSurfSplashPatches
     return true
 
   end
@@ -1029,6 +1030,41 @@ HiddenMoveHandlers::UseMove.add(:SWEETSCENT, proc { |move, pokemon|
   next true
 })
 
+HiddenMoveHandlers::CanUseMove.add(:RAINDANCE, proc { |move, pkmn, showmsg|
+  next true if Settings::GAME_ID == :IF_HOENN
+})
+
+
+HiddenMoveHandlers::UseMove.add(:RAINDANCE, proc { |move, pokemon|
+  if !pbHiddenMoveAnimation(pokemon)
+    pbMessage(_INTL("{1} used {2}!", pokemon.name, GameData::Move.get(move).name))
+  end
+  changeCurrentWeather(:Rain,1)
+  next true
+})
+
+HiddenMoveHandlers::CanUseMove.add(:SUNNYDAY, proc { |move, pkmn, showmsg|
+  next true if Settings::GAME_ID == :IF_HOENN
+})
+HiddenMoveHandlers::UseMove.add(:SUNNYDAY, proc { |move, pokemon|
+  if !pbHiddenMoveAnimation(pokemon)
+    pbMessage(_INTL("{1} used {2}!", pokemon.name, GameData::Move.get(move).name))
+  end
+  changeCurrentWeather(:Sunny,1)
+  next true
+})
+
+HiddenMoveHandlers::CanUseMove.add(:WHIRLWIND, proc { |move, pkmn, showmsg|
+  next true if Settings::GAME_ID == :IF_HOENN
+})
+HiddenMoveHandlers::UseMove.add(:WHIRLWIND, proc { |move, pokemon|
+  if !pbHiddenMoveAnimation(pokemon)
+    pbMessage(_INTL("{1} used {2}!", pokemon.name, GameData::Move.get(move).name))
+  end
+  changeCurrentWeather(:Wind,1)
+  next true
+})
+
 #===============================================================================
 # Teleport
 #===============================================================================
@@ -1137,12 +1173,19 @@ end
 
 Events.onAction += proc { |_sender, _e|
   terrain = $game_player.pbFacingTerrainTag
-  if terrain.waterfall
+  if terrain.waterfall || isFacingTempWaterfall()
     pbWaterfall
   elsif terrain.waterfall_crest
     pbMessage(_INTL("A wall of water is crashing down with a mighty roar."))
   end
 }
+
+def isFacingTempWaterfall()
+  return if !$game_temp.temp_waterfall
+  player_coordinates = [$game_player.x, $game_player.y]
+  echoln $game_temp.temp_waterfall.include?(player_coordinates)
+  return $game_temp.temp_waterfall.include?(player_coordinates)
+end
 
 HiddenMoveHandlers::CanUseMove.add(:WATERFALL, proc { |move, pkmn, showmsg|
   next false if !pbCheckHiddenMoveBadge(Settings::BADGE_FOR_WATERFALL, showmsg)

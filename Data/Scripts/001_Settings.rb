@@ -5,9 +5,9 @@
 #==============================================================================#
 module Settings
   # The version of your game. It has to adhere to the MAJOR.MINOR.PATCH format.
-  GAME_VERSION = '6.5.1'
-  GAME_VERSION_NUMBER = "6.5.1"
-  LATEST_GAME_RELEASE = "6.5"
+  GAME_VERSION = '6.6.2'
+  GAME_VERSION_NUMBER = "6.6.2"
+  LATEST_GAME_RELEASE = "6.6"
 
   POKERADAR_LIGHT_ANIMATION_RED_ID = 17
   POKERADAR_LIGHT_ANIMATION_GREEN_ID = 18
@@ -17,11 +17,14 @@ module Settings
   LEADER_VICTORY_MUSIC="Battle victory leader"
   TRAINER_VICTORY_MUSIC="trainer-victory"
   WILD_VICTORY_MUSIC="wild-victory"
+
   #getRandomCustomFusionForIntro
   FUSION_ICON_SPRITE_OFFSET = 10
 
+  ANIMATE_REFLECTIONS= false#GAME_ID == :IF_HOENN #true
+  USE_REFLECTIONS = false
   #Infinite fusion settings
-  NB_POKEMON = 501
+  NB_POKEMON = Settings::GAME_ID == :IF_HOENN ? 565 : 501
   CUSTOM_BASE_SPRITES_FOLDER = "Graphics/CustomBattlers/local_sprites/BaseSprites/"
   CUSTOM_BATTLERS_FOLDER = "Graphics/CustomBattlers/"
   CUSTOM_SPRITES_TO_IMPORT_FOLDER = "Graphics/CustomBattlers/Sprites to import/"
@@ -79,7 +82,7 @@ module Settings
   EGGSPRITE_SCALE = 1
   BACKSPRITE_POSITION_OFFSET = 20
   FRONTSPRITE_POSITION = 200
-  SHINY_HUE_OFFSET = 75
+  SHINY_HUE_OFFSET = 75 #no longer used
   NO_LEVEL_MODE_LEVEL_INCR = 5.8
   NO_LEVEL_MODE_LEVEL_BASE = 6
 
@@ -161,7 +164,7 @@ module Settings
   # Number of badges in the game
   NB_BADGES = 16
   # The odds of a newly generated Pokémon being shiny (out of 65536).
-  SHINY_POKEMON_CHANCE = 16#(MECHANICS_GENERATION >= 6) ? 16 : 8
+  SHINY_POKEMON_CHANCE =16#(MECHANICS_GENERATION >= 6) ? 16 : 8
 
   # The odds of a wild Pokémon/bred egg having Pokérus (out of 65536).
   POKERUS_CHANCE = 3
@@ -218,10 +221,10 @@ module Settings
   POISON_IN_FIELD = true #(MECHANICS_GENERATION <= 4)
   # Whether poisoned Pokémon will faint while walking around in the field
   # (true), or survive the poisoning with 1 HP (false).
-  POISON_FAINT_IN_FIELD = (MECHANICS_GENERATION >= 3)
+  POISON_FAINT_IN_FIELD = false
   # Whether planted berries grow according to Gen 4 mechanics (true) or Gen 3
   # mechanics (false).
-  NEW_BERRY_PLANTS = (MECHANICS_GENERATION >= 4)
+  NEW_BERRY_PLANTS = true
   # Whether fishing automatically hooks the Pokémon (true), or whether there is
   # a reaction test first (false).
   FISHING_AUTO_HOOK = false
@@ -526,6 +529,9 @@ module Settings
   # ID of the animation played when a berry tree grows a stage while the player
   # is on the map (for new plant growth mechanics only).
   PLANT_SPARKLE_ANIMATION_ID = 7
+  SPARKLE_SHORT_ANIMATION_ID = 25
+  SPARKLE_SUBTLE_ANIMATION_ID = 29
+
   SLEEP_ANIMATION_ID = 26
 
   CUT_TREE_ANIMATION_ID = 19

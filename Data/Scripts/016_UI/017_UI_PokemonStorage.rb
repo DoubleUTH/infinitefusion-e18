@@ -2280,7 +2280,7 @@ class PokemonStorageScreen
     pokemon = @storage[selected[0], selected[1]]
 
     if !pokemon
-      command = pbShowCommands("Select an action", ["Cancel", "Stop fusing"])
+      command = pbShowCommands("Select an action", ["Continue fusing", "Stop fusing"])
       case command
       when 1 #stop
         cancelFusion()
@@ -2291,7 +2291,7 @@ class PokemonStorageScreen
         _INTL("Swap")
       ]
       commands.push(_INTL("Stop fusing"))
-      commands.push(_INTL("Cancel"))
+      commands.push(_INTL("Continue fusing"))
 
       if !heldpoke
         pbPlace(selected)
@@ -2378,6 +2378,7 @@ class PokemonStorageScreen
       reverseFusion(pokemon)
       $PokemonBag.pbDeleteItem(:DNAREVERSER) if $PokemonBag.pbQuantity(:INFINITEREVERSERS) <= 0
     end
+    @scene.pbHardRefresh
   end
 
   def pbUnfuseFromPC(selected)
@@ -2396,41 +2397,6 @@ class PokemonStorageScreen
       end
       @scene.pbHardRefresh
     end
-  end
-
-  def selectSplicer()
-    dna_splicers_const = "DNA Splicers"
-    super_splicers_const = "Super Splicers"
-    infinite_splicers_const = "Infinite Splicers"
-
-    dnaSplicersQt = $PokemonBag.pbQuantity(:DNASPLICERS)
-    superSplicersQt = $PokemonBag.pbQuantity(:SUPERSPLICERS)
-    infiniteSplicersQt = $PokemonBag.pbQuantity(:INFINITESPLICERS)
-    infiniteSplicers2Qt = $PokemonBag.pbQuantity(:INFINITESPLICERS2)
-
-    options = []
-    options.push(_INTL "{1}", infinite_splicers_const) if infiniteSplicers2Qt > 0 || infiniteSplicersQt > 0
-    options.push(_INTL("{1} ({2})", super_splicers_const, superSplicersQt)) if superSplicersQt > 0
-    options.push(_INTL("{1} ({2})", dna_splicers_const, dnaSplicersQt)) if dnaSplicersQt > 0
-
-    if options.length <= 0
-      pbDisplay(_INTL("You have no fusion items available."))
-      return nil
-    end
-
-    cmd = pbShowCommands("Use which splicers?", options)
-    if cmd == -1
-      return nil
-    end
-    ret = options[cmd]
-    if ret.start_with?(dna_splicers_const)
-      return :DNASPLICERS
-    elsif ret.start_with?(super_splicers_const)
-      return :SUPERSPLICERS
-    elsif ret.start_with?(infinite_splicers_const)
-      return infiniteSplicers2Qt >= 1 ? :INFINITESPLICERS2 : :INFINITESPLICERS
-    end
-    return nil
   end
 
 end

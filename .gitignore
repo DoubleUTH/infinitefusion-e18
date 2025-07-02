@@ -1,6 +1,7 @@
 Graphics/CustomBattlers/local_sprites/*
-Graphics/Pokemon/FusionIcons/*
-Graphics/CustomBattlers/spritesheets
+Graphics/Battlers/Shiny/*
+
+Graphics/CustomBattlers/spritesheets/*
 Graphics/CustomBattlers/*
 Data/sprites/*
 Data/VERSION
@@ -13,5 +14,4 @@ Data/sprites/sprites_rate_limit.log
 Game.rxproj
 .DS_Store
 PBS/*
-Game.rxproj
 rpgmaker.sh
