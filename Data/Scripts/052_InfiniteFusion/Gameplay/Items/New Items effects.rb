@@ -1692,24 +1692,23 @@ def pbUnfuse(pokemon, scene, supersplicers, pcPosition = nil)
       pokemon.exp_when_fused_body = nil
 
       if pokemon.shiny?
-        pokemon.shiny = false
-        if pokemon.bodyShiny? && pokemon.headShiny?
-          pokemon.shiny = true
+        poke1.shiny = false
+        poke2.shiny = false
+
+        if pokemon.bodyShiny?
+          poke1.shiny = true
+          poke1.natural_shiny = true if pokemon.natural_shiny && !pokemon.debug_shiny
+        end
+
+        if pokemon.headShiny?
           poke2.shiny = true
-          pokemon.natural_shiny = true if pokemon.natural_shiny && !pokemon.debug_shiny
           poke2.natural_shiny = true if pokemon.natural_shiny && !pokemon.debug_shiny
-        elsif pokemon.bodyShiny?
-          pokemon.shiny = true
-          poke2.shiny = false
-          pokemon.natural_shiny = true if pokemon.natural_shiny && !pokemon.debug_shiny
-        elsif pokemon.headShiny?
-          poke2.shiny = true
-          pokemon.shiny = false
-          poke2.natural_shiny = true if pokemon.natural_shiny && !pokemon.debug_shiny
-        else
+        end
+
+        if !pokemon.bodyShiny? && !pokemon.headShiny?
           # shiny was obtained already fused
           if rand(2) == 0
-            pokemon.shiny = true
+            poke1.shiny = true
           else
             poke2.shiny = true
           end
@@ -1722,68 +1721,51 @@ def pbUnfuse(pokemon, scene, supersplicers, pcPosition = nil)
         fused_pokemon_learned_moved << move.id unless fused_pokemon_learned_moved.include?(move.id)
       end
       fused_pokemon_learned_moved.each do |move|
-        pokemon.add_learned_move(move)
+        poke1.add_learned_move(move)
         poke2.add_learned_move(move)
       end
 
-      pokemon.ability_index = pokemon.body_original_ability_index if pokemon.body_original_ability_index
+      poke1.ability_index = pokemon.body_original_ability_index if pokemon.body_original_ability_index
       poke2.ability_index = pokemon.head_original_ability_index if pokemon.head_original_ability_index
 
       pokemon.ability2_index = nil
       pokemon.ability2 = nil
+      poke1.ability2_index = nil
+      poke1.ability2 = nil
       poke2.ability2_index = nil
       poke2.ability2 = nil
 
-      pokemon.debug_shiny = true if pokemon.debug_shiny && pokemon.body_shiny
-      poke2.debug_shiny = true if pokemon.debug_shiny && poke2.head_shiny
+      poke1.debug_shiny = true if poke1.shiny? && pokemon.debug_shiny && pokemon.body_shiny
+      poke2.debug_shiny = true if poke2.shiny? && pokemon.debug_shiny && pokemon.head_shiny
 
       pokemon.body_shiny = false
       pokemon.head_shiny = false
 
-      if !pokemon.shiny?
-        pokemon.debug_shiny = false
-      end
-      if !poke2.shiny?
-        poke2.debug_shiny = false
+      if keepInParty != 0
+        # Swap poke1 and poke2, so that head is kept in party instead
+        temp = poke1
+        poke1 = poke2
+        poke2 = temp
       end
 
-      if $Trainer.party.length >= 6
-        if (keepInParty == 0)
-          if isOnPinkanIsland()
-            scene.pbDisplay(_INTL("{1} was released.", poke2.name))
-          else
-            $PokemonStorage.pbStoreCaught(poke2)
-            scene.pbDisplay(_INTL("{1} was sent to the PC.", poke2.name))
-          end
+      poke2.calc_stats
+
+      if pcPosition != nil
+        # Fusing from PC
+        box = pcPosition[0]
+        index = pcPosition[1]
+        # todo: store at next available position from current position
+        $PokemonStorage.pbStoreCaught(poke2)
+      elsif $Trainer.party_full?
+        # Fusing from party
+        if isOnPinkanIsland()
+          scene.pbDisplay(_INTL("{1} was released.", poke2.name))
         else
-          poke2 = Pokemon.new(bodyPoke, body_level)
-          poke1 = Pokemon.new(headPoke, head_level)
-
-          # Fusing from PC
-          if pcPosition != nil
-            box = pcPosition[0]
-            index = pcPosition[1]
-            # todo: store at next available position from current position
-            $PokemonStorage.pbStoreCaught(poke2)
-          else
-            # Fusing from party
-            if isOnPinkanIsland()
-              scene.pbDisplay(_INTL("{1} was released.", poke2.name))
-            else
-              $PokemonStorage.pbStoreCaught(poke2)
-              scene.pbDisplay(_INTL("{1} was sent to the PC.", poke2.name))
-            end
-          end
+          $PokemonStorage.pbStoreCaught(poke2)
+          scene.pbDisplay(_INTL("{1} was sent to the PC.", poke2.name))
         end
       else
-        if pcPosition != nil
-          box = pcPosition[0]
-          index = pcPosition[1]
-          # todo: store at next available position from current position
-          $PokemonStorage.pbStoreCaught(poke2)
-        else
-          Kernel.pbAddPokemonSilent(poke2, poke2.level)
-        end
+        Kernel.pbAddPokemonSilent(poke2, poke2.level)
       end
 
       # On ajoute les poke au pokedex
@@ -1793,11 +1775,19 @@ def pbUnfuse(pokemon, scene, supersplicers, pcPosition = nil)
       $Trainer.pokedex.set_owned(poke2.species)
 
       pokemon.species = poke1.species
-      pokemon.level = poke1.level
+      pokemon.exp = poke1.exp
       pokemon.name = poke1.name
       pokemon.moves = poke1.moves
+      pokemon.ability_index = poke1.ability_index
+      pokemon.shiny = poke1.shiny?
+      pokemon.debug_shiny = poke1.debug_shiny
+      pokemon.natural_shiny = poke1.natural_shiny
+      poke1.learned_moves.each do |move|
+        pokemon.add_learned_move(move)
+      end
       pokemon.obtain_method = 0
       poke1.obtain_method = 0
+      pokemon.calc_stats
 
       # scene.pbDisplay(p1.to_s + " " + p2.to_s)
       scene.pbHardRefresh
